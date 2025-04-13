@@ -106,3 +106,28 @@ li{
     bottom: 55px;
     left: 40px;
 }
+.gameover{
+    margin-left: auto;
+    margin-right: auto;
+    top: 216px;
+    width: 800px;
+    height: 500px;
+    background-color:#423b8f;
+    box-shadow: 2px 2px 2px 2px black;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    position: absolute;
+    display: none;
+}
+.gameoverbg{
+    margin-left: auto;
+    margin-right: auto;
+    top: 216px;
+    width: 800px;
+    height: 500px;
+    background-color:#423b8f;
+    box-shadow: 2px 2px 2px 2px black;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    position: absolute;
+}

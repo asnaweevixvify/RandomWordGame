@@ -1,9 +1,10 @@
 let timeText = document.querySelector('.h2-time');
 let scoreText = document.querySelector('.h2-score')
 let wordMain = document.querySelector('.h1-word')
-let typeText = document.querySelector('.type').value;
+let typeText = document.querySelector('.type');
+let gameOver =document.querySelector('.gameover')
 
-
+let countdown;
 let timeLeft = 15;
 
 const wordListEasy=[
@@ -18,15 +19,29 @@ function gamePlay(){
     const randomNumber = Math.floor(Math.random() * wordListEasy.length);
     let randomWord = `${wordListEasy[randomNumber].word}`
     wordMain.innerHTML=randomWord
-    countTime();
+    if(!countdown){
+        countTime();
+    }
+    typeText.addEventListener('input',function(){
+        if(typeText.value === randomWord){
+            timeLeft+=2
+            typeText.value=""
+            gamePlay();
+        }
+    })
+    
 }
 function countTime(){
-const countdown = setInterval(() => {
+    countdown = setInterval(() => {
     timeText.innerHTML=`เวลา ${timeLeft} วินาที`;
-    timeLeft--
-    if (timeLeft < 0) {
+    if (timeLeft === 0) {
         clearInterval(countdown);
-      }
+    }
+      timeLeft--
   }, 1000);
+   
 }
+    
+
+
 gamePlay();
