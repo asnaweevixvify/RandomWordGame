@@ -14,25 +14,34 @@ let wordListEasy = '';
 let wordListMedium = '';
 let wordListHard = '';
 let score = 0;
-let highScore;
+let highScore 
 
 let allDataLoaded = 0; // 
 
 let saveMode;
+
+
     if (localStorage.getItem('mode') !== null) {
         saveMode = localStorage.getItem('mode');
       } else {
-        saveMode = 'ปานกลาง';
+        saveMode = 'Medium';
       }
       modeSelect.value = saveMode;
-
-highScore = localStorage.getItem('latestHighScore')
-    if(!highScore){
-    localStorage.setItem('latestHighScore',0)
+    
+    if(saveMode === 'Easy'){
+        highScore = parseInt(localStorage.getItem('latestHighScoreEasy'))|| 0
+        highScoreText.innerHTML=`คะแนนมากที่สุดของคุณ = ${highScore}`
     }
-    else{
-    highScoreText.innerHTML=`คะแนนมากที่สุดของคุณ = ${highScore}`
+    else if(saveMode === 'Medium'){
+        highScore = parseInt(localStorage.getItem('latestHighScoreMedium'))|| 0
+        highScoreText.innerHTML=`คะแนนมากที่สุดของคุณ = ${highScore}`
     }
+    else if(saveMode === 'Hard'){
+        highScore = parseInt(localStorage.getItem('latestHighScoreHard'))|| 0
+        highScoreText.innerHTML=`คะแนนมากที่สุดของคุณ = ${highScore}`
+    }
+    
+    
 
 fetch("easy.json")
 .then(res => res.json())
@@ -79,26 +88,28 @@ modeSelect.addEventListener('change',function(e){
     clearInterval(countdown);  
     countdown = null;         
     timeLeft = 10;   
-    score = 0;          
+    score = 0; 
+    localStorage.setItem("mode",level)         
     timeText.innerHTML = `เวลา ${timeLeft} วินาที`; 
     typeText.value = "";       
     gameOver.classList.replace('gameoverbg', 'gameover'); 
-    localStorage.setItem("mode",level)
+    highScore = parseInt(localStorage.getItem(`latestHighScore${modeSelect.value}`))|| 0
+    highScoreText.innerHTML=`คะแนนมากที่สุดของคุณ = ${highScore}`
     gamePlay();                
     
 })
 
 function gamePlay(){
     const randomNumber = Math.floor(Math.random() * wordListEasy.length);
-    if(modeSelect.value === "ง่าย"){
+    if(modeSelect.value === "Easy"){
     randomWord = `${wordListEasy[randomNumber]}`
     wordMain.innerHTML=randomWord
     }
-    else if(modeSelect.value === "ปานกลาง"){
+    else if(modeSelect.value === "Medium"){
         randomWord = `${wordListMedium[randomNumber]}`
         wordMain.innerHTML=randomWord
     }
-    else if(modeSelect.value === "ยาก"){
+    else if(modeSelect.value === "Hard"){
         randomWord = `${wordListHard[randomNumber]}`
         wordMain.innerHTML=randomWord
     }
@@ -115,13 +126,29 @@ function countTime(){
         clearInterval(countdown);
         gameOver.classList.replace('gameover','gameoverbg')
         scoreOver.innerHTML=`คะแนนของคุณเท่ากับ ${score} คะแนน`
-        
-        if(score>highScore){
-            highScore = score
-            localStorage.setItem('latestHighScore', highScore)
-            highScoreText.innerHTML=`คะแนนมากที่สุดของคุณ = ${highScore}`
+
+        if(modeSelect.value === "Easy"){
+            if(score>highScore){
+                highScore = score
+                localStorage.setItem('latestHighScoreEasy', highScore)
+                highScoreText.innerHTML=`คะแนนมากที่สุดของคุณ = ${highScore}`
+            }
         }
-    }
+        else if(modeSelect.value === "Medium"){
+            if(score>highScore){
+                highScore = score
+                localStorage.setItem('latestHighScoreMedium', highScore)
+                highScoreText.innerHTML=`คะแนนมากที่สุดของคุณ = ${highScore}`
+            }
+        }
+        else if(modeSelect.value === "Hard"){
+            if(score>highScore){
+                highScore = score
+                localStorage.setItem('latestHighScoreHard', highScore)
+                highScoreText.innerHTML=`คะแนนมากที่สุดของคุณ = ${highScore}`
+            }
+        }
+}
       timeLeft--
   }, 1000);
    
