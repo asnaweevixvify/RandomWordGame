@@ -6,6 +6,7 @@ let gameOver =document.querySelector('.gameover')
 let modeSelect = document.querySelector('#select');
 let resetText = document.querySelector('.h1-buttonnull')
 let scoreOver = document.querySelector('.h1-scoreover')
+let highScoreText = document.querySelector('.h1-highscore')
 let randomWord='';
 let countdown;
 let timeLeft = 10;
@@ -13,6 +14,7 @@ let wordListEasy = '';
 let wordListMedium = '';
 let wordListHard = '';
 let score = 0;
+let highScore;
 
 let allDataLoaded = 0; // 
 
@@ -23,6 +25,14 @@ let saveMode;
         saveMode = 'ปานกลาง';
       }
       modeSelect.value = saveMode;
+
+highScore = localStorage.getItem('latestHighScore')
+    if(!highScore){
+    localStorage.setItem('latestHighScore',0)
+    }
+    else{
+    highScoreText.innerHTML=`คะแนนมากที่สุดของคุณ = ${highScore}`
+    }
 
 fetch("easy.json")
 .then(res => res.json())
@@ -68,7 +78,7 @@ modeSelect.addEventListener('change',function(e){
     let level = e.target.value;
     clearInterval(countdown);  
     countdown = null;         
-    timeLeft = 15;   
+    timeLeft = 10;   
     score = 0;          
     timeText.innerHTML = `เวลา ${timeLeft} วินาที`; 
     typeText.value = "";       
@@ -105,6 +115,12 @@ function countTime(){
         clearInterval(countdown);
         gameOver.classList.replace('gameover','gameoverbg')
         scoreOver.innerHTML=`คะแนนของคุณเท่ากับ ${score} คะแนน`
+        
+        if(score>highScore){
+            highScore = score
+            localStorage.setItem('latestHighScore', highScore)
+            highScoreText.innerHTML=`คะแนนมากที่สุดของคุณ = ${highScore}`
+        }
     }
       timeLeft--
   }, 1000);
@@ -113,10 +129,12 @@ function countTime(){
 function resetGame(){
     clearInterval(countdown);  
     countdown = null;         
-    timeLeft = 15;             
+    timeLeft = 10;             
     timeText.innerHTML = `เวลา ${timeLeft} วินาที`; 
     typeText.value = "";       
     gameOver.classList.replace('gameoverbg', 'gameover'); 
+    score = 0;
+    scoreText.innerHTML=`${score} คะแนน`
     gamePlay();                
 }
     
