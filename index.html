@@ -18,7 +18,7 @@
         <ul class="nav-row">
             <li class="list">
                 <h3 class="h3"> ระดับความยาก </h3>
-                <select class="select">
+                <select class="select" id="select">
                     <option> <h4>ง่าย</h4> </option>
                     <option> <h4>ปานกลาง</h4> </option>
                     <option> <h4>ยาก</h4> </option>
@@ -31,7 +31,7 @@
             เกมพิมพ์เร็ว | Speed Typing
         </h1>
         <div class="time-score">
-            <h2 class="h2-time"> เวลา 15 วินาที </h2>
+            <h2 class="h2-time"> เวลา 10 วินาที </h2>
             <h2 class="h2-score"> 0 คะแนน </h2>
         </div>
         <h1 class="h1-word">
@@ -39,6 +39,15 @@
         </h1>
         <input type="text" class="type" placeholder="ป้อนคำที่คุณเห็น">
         <div class="gameover">
+            <h1 class="h1-over">
+                เกมจบแล้ว
+            </h1>    
+            <h1 class="h1-scoreover">
+                คะแนนของคุณเท่ากับ
+            </h1>    
+                <h1 class="h1-button" onclick="resetGame()">
+                    กดเพื่อเริ่มใหม่
+                </h1>
             
         </div>
     </div>

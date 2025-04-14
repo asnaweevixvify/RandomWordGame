@@ -3,45 +3,122 @@ let scoreText = document.querySelector('.h2-score')
 let wordMain = document.querySelector('.h1-word')
 let typeText = document.querySelector('.type');
 let gameOver =document.querySelector('.gameover')
-
+let modeSelect = document.querySelector('#select');
+let resetText = document.querySelector('.h1-buttonnull')
+let scoreOver = document.querySelector('.h1-scoreover')
+let randomWord='';
 let countdown;
-let timeLeft = 15;
+let timeLeft = 10;
+let wordListEasy = '';
+let wordListMedium = '';
+let wordListHard = '';
+let score = 0;
 
-const wordListEasy=[
-    {id:1 ,word:"ไก่"},
-    {id:2 ,word:"แมว"},
-    {id:3 ,word:"ปลา"},
-    {id:4 ,word:"หมา"},
-    {id:5 ,word:"วัว"}
-]
+let allDataLoaded = 0; // 
+
+let saveMode;
+    if (localStorage.getItem('mode') !== null) {
+        saveMode = localStorage.getItem('mode');
+      } else {
+        saveMode = 'ปานกลาง';
+      }
+      modeSelect.value = saveMode;
+
+fetch("easy.json")
+.then(res => res.json())
+.then(json => {
+    wordListEasy = json.words;
+    allDataLoaded++;
+    checkDataLoaded();
+});
+
+fetch("medium.json")
+.then(res => res.json())
+.then(json => {
+    wordListMedium = json.words;
+    allDataLoaded++;
+    checkDataLoaded();
+});
+
+fetch("hard.json")
+.then(res => res.json())
+.then(json => {
+    wordListHard = json.words;
+    allDataLoaded++;
+    checkDataLoaded();
+});
+
+
+function checkDataLoaded() {
+    if (allDataLoaded === 3) {
+        gamePlay();  
+    }
+}
+
+typeText.addEventListener('input',function(){
+    if(typeText.value === randomWord){
+        timeLeft+=3
+        score ++
+        scoreText.innerHTML=`${score} คะแนน`
+        typeText.value=""
+        gamePlay();
+    }
+})
+modeSelect.addEventListener('change',function(e){
+    let level = e.target.value;
+    clearInterval(countdown);  
+    countdown = null;         
+    timeLeft = 15;   
+    score = 0;          
+    timeText.innerHTML = `เวลา ${timeLeft} วินาที`; 
+    typeText.value = "";       
+    gameOver.classList.replace('gameoverbg', 'gameover'); 
+    localStorage.setItem("mode",level)
+    gamePlay();                
+    
+})
 
 function gamePlay(){
     const randomNumber = Math.floor(Math.random() * wordListEasy.length);
-    let randomWord = `${wordListEasy[randomNumber].word}`
+    if(modeSelect.value === "ง่าย"){
+    randomWord = `${wordListEasy[randomNumber]}`
     wordMain.innerHTML=randomWord
+    }
+    else if(modeSelect.value === "ปานกลาง"){
+        randomWord = `${wordListMedium[randomNumber]}`
+        wordMain.innerHTML=randomWord
+    }
+    else if(modeSelect.value === "ยาก"){
+        randomWord = `${wordListHard[randomNumber]}`
+        wordMain.innerHTML=randomWord
+    }
+
     if(!countdown){
         countTime();
     }
-    typeText.addEventListener('input',function(){
-        if(typeText.value === randomWord){
-            timeLeft+=2
-            typeText.value=""
-            gamePlay();
-        }
-    })
-    
 }
+
 function countTime(){
     countdown = setInterval(() => {
     timeText.innerHTML=`เวลา ${timeLeft} วินาที`;
     if (timeLeft === 0) {
         clearInterval(countdown);
+        gameOver.classList.replace('gameover','gameoverbg')
+        scoreOver.innerHTML=`คะแนนของคุณเท่ากับ ${score} คะแนน`
     }
       timeLeft--
   }, 1000);
    
 }
+function resetGame(){
+    clearInterval(countdown);  
+    countdown = null;         
+    timeLeft = 15;             
+    timeText.innerHTML = `เวลา ${timeLeft} วินาที`; 
+    typeText.value = "";       
+    gameOver.classList.replace('gameoverbg', 'gameover'); 
+    gamePlay();                
+}
     
 
 
-gamePlay();
