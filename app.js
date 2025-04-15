@@ -118,7 +118,7 @@ function gamePlay(){
         countTime();
     }
 }
-
+/*
 function countTime(){
     countdown = setInterval(() => {
     timeText.innerHTML=`เวลา ${timeLeft} วินาที`;
@@ -153,6 +153,7 @@ function countTime(){
   }, 1000);
    
 }
+*/
 function resetGame(){
     clearInterval(countdown);  
     countdown = null;         
