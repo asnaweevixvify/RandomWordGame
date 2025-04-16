@@ -9,7 +9,7 @@ let scoreOver = document.querySelector('.h1-scoreover')
 let highScoreText = document.querySelector('.h1-highscore')
 let randomWord='';
 let countdown;
-let timeLeft = 10;
+let timeLeft = 5;
 let wordListEasy = '';
 let wordListMedium = '';
 let wordListHard = '';
@@ -87,7 +87,7 @@ modeSelect.addEventListener('change',function(e){
     let level = e.target.value;
     clearInterval(countdown);  
     countdown = null;         
-    timeLeft = 10;   
+    timeLeft = 5;   
     score = 0; 
     localStorage.setItem("mode",level)         
     timeText.innerHTML = `เวลา ${timeLeft} วินาที`; 
@@ -157,7 +157,7 @@ function countTime(){
 function resetGame(){
     clearInterval(countdown);  
     countdown = null;         
-    timeLeft = 10;             
+    timeLeft = 5;             
     timeText.innerHTML = `เวลา ${timeLeft} วินาที`; 
     typeText.value = "";       
     gameOver.classList.replace('gameoverbg', 'gameover'); 
